@@ -40,12 +40,12 @@ SELECT time::date AS day, count(*)
             GROUP BY time::date
             ORDER BY time::date;
 
-CREATE VIEW err_rate AS
-SELECT requests.day,
-        errors.count::float / req.count::float * 100
-        AS percentage
-    FROM requests, errors
-    WHERE requests.day = errors.day;
+create view errors as 
+SELECT time::date AS day, count(*)
+                FROM log
+                WHERE status != '200 OK'
+                GROUP BY time::date
+                ORDER BY time::date;
 
 CREATE VIEW err_rate AS
 SELECT requests.day,
