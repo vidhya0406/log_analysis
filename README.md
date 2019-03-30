@@ -40,7 +40,7 @@ SELECT time::date AS day, count(*)
             GROUP BY time::date
             ORDER BY time::date;
 
-create view errors as 
+create view errors as
 SELECT time::date AS day, count(*)
                 FROM log
                 WHERE status != '200 OK'
