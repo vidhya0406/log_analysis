@@ -27,15 +27,16 @@ def popular_three_articles(db_cursor):
     """
 
     query = """
-        SELECT authors.name, COUNT(*) AS num
-        FROM authors
-        JOIN articles
-        ON authors.id = articles.author
-        JOIN log
-        ON log.path like concat('/article/%', articles.slug)
-        GROUP BY authors.name
-        ORDER BY num DESC
-        LIMIT 3;
+        SELECT articles.title,
+                   count(*) AS num
+            FROM   log,
+                   articles,
+                   authors
+            WHERE  log.path = '/article/' || articles.slug
+            AND articles.author = authors.id
+            GROUP BY articles.title
+            ORDER BY num DESC
+            LIMIT 3;
     """
     db_cursor.execute(query)
     results = db_cursor.fetchall()
